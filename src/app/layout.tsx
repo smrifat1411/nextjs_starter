@@ -13,8 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`w-full mx-auto ${geistvf.variable} font-geistvf`}>
+    <html lang="en" className={` ${geistvf.variable}`}>
+      <body
+        className={`w-full mx-auto font-geistvf antialiased`}
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>
