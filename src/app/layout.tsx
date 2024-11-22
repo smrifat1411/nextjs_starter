@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { geistvf } from "@/styles/font";
+import CommonLayout from "@/layouts/CommonLayout";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
@@ -12,14 +12,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" className={` ${geistvf.variable}`}>
-      <body
-        className={`w-full mx-auto font-geistvf antialiased`}
-        suppressHydrationWarning
-      >
-        {children}
-      </body>
-    </html>
-  );
+  return <CommonLayout>{children}</CommonLayout>;
 }
