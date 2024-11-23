@@ -6,10 +6,30 @@ import { Search } from "./searchfilter";
 import { Cart } from "./cart";
 import Wishlist from "./wishlist/WishList";
 import ProfileSection from "./ProfileSection";
+import Login from "@/components/auth/Login";
 
 export const MainNavbar: React.FC = () => {
   // State to manage the mobile menu open/close state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // State to manage the login modal visibility
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  // Handler to open the login modal
+  const handleProfileClick = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  // Handler to close the login modal
+  const handleLoginModalClose = () => {
+    setIsLoginModalOpen(false);
+  };
+
+  // Dummy handler for login form submission
+  // const handleLoginSubmit = (email: string) => {
+  //   console.log("Logging in with email:", email);
+  //   setIsLoginModalOpen(false); // Close the modal after login
+  // };
 
   return (
     <div className="flex h-[80px] w-full items-center justify-between border-b border-gray-200 bg-white p-4 text-sm md:px-12">
@@ -63,17 +83,21 @@ export const MainNavbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Section: Wishlist, Cart, and Menu */}
+      {/* Right Section: Wishlist, Cart, and Profile */}
       <div className="flex h-full items-center gap-4 md:gap-6">
         {/* Mobile Search Placeholder */}
         <div className="block cursor-pointer md:hidden">
           {/* Placeholder for mobile search */}
         </div>
 
-        {/* Profile Section*/}
+        {/* Profile Section */}
         <div className="flex h-full items-center gap-4 md:gap-6">
-          <ProfileSection />
+          {/* Profile Icon - Opens Login Modal */}
+          <div onClick={handleProfileClick} className="cursor-pointer">
+            <ProfileSection />
+          </div>
         </div>
+
         {/* Add to Wishlist Section */}
         <Wishlist />
 
@@ -147,6 +171,9 @@ export const MainNavbar: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Login Modal */}
+      {isLoginModalOpen && <Login onClose={handleLoginModalClose} />}
     </div>
   );
 };

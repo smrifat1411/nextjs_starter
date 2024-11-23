@@ -1,8 +1,12 @@
+"use client";
 import React, { Suspense } from "react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 import { geistvf } from "@/styles/font";
 import Image from "next/image";
+import "react-toastify/dist/ReactToastify.css";
+import AuthProvider from "@/providers/AuthProvider";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => (
@@ -20,21 +24,24 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => (
             },
           }}
         >
-          <Suspense
-            fallback={
-              <div className="flex h-screen w-screen items-center justify-center">
-                <Image
-                  className="animate-bounce"
-                  src={"/logos/logo.svg"}
-                  alt={""}
-                  width={100}
-                  height={100}
-                />
-              </div>
-            }
-          >
-            {children}
-          </Suspense>
+          <AuthProvider>
+            <ToastContainer />
+            <Suspense
+              fallback={
+                <div className="flex h-screen w-screen items-center justify-center">
+                  <Image
+                    className="animate-bounce"
+                    src={"/logos/logo.svg"}
+                    alt={""}
+                    width={100}
+                    height={100}
+                  />
+                </div>
+              }
+            >
+              {children}
+            </Suspense>
+          </AuthProvider>
         </ConfigProvider>
       </AntdRegistry>
     </body>
