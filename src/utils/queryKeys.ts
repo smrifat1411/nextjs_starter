@@ -5,8 +5,11 @@ export const AUTH_KEYS = {
 };
 
 export const PRODUCT_KEYS = {
-  ALL_PRODUCTS: ["allProducts"] as const,
-  PRODUCT_DETAILS: (id: string) => ["productDetails", id] as const,
+  COUNT: ["products", "count"],
+  ALL: ["products", "all"],
+  BY_ID: (id: string | number) => ["products", "byId", id],
+  OPTIONS: ["products", "options"],
+  VARIANT_OPTIONS: (id: string) => ["products", "variantOptions", id],
 };
 
 export const PROFILE_KEYS = {

@@ -1,8 +1,7 @@
-import { logout as apiLogout, signin, signup } from "@/apis/auth/authApi";
+import React, { useReducer } from "react";
 import AuthContext from "@/contexts/AuthContext";
 import { authReducer, initialAuthState } from "@/reducers/authReducer";
-import React, { useReducer } from "react";
-import { toast } from "react-toastify";
+import { signin, signup, logout as apiLogout } from "@/apis/auth/authApi";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -11,44 +10,39 @@ interface AuthProviderProps {
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialAuthState);
 
-  /**
-   * Logs in the user and updates the authentication state.
-   * @param values - The user's login credentials.
-   */
   const login = async (values: { email: string; password: string }) => {
-    const response = await signin(values); // Errors handled in apiClient
-    dispatch({ type: "LOGIN", payload: response.user });
-    toast.success("Login successful!");
+    dispatch({ type: "SET_LOADING", payload: true }); // Start loading
+    try {
+      const response = await signin(values);
+      dispatch({ type: "LOGIN", payload: response.user });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false }); // End loading
+    }
   };
 
-  /**
-   * Registers a new user and updates the authentication state.
-   * @param values - The user's registration credentials.
-   */
   const register = async (values: { email: string; password: string }) => {
-    const response = await signup(values); // Errors handled in apiClient
-    dispatch({ type: "LOGIN", payload: response.user });
-    toast.success("Registration successful!");
+    dispatch({ type: "SET_LOADING", payload: true }); // Start loading
+    try {
+      const response = await signup(values);
+      dispatch({ type: "LOGIN", payload: response.user });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false }); // End loading
+    }
   };
 
-  /**
-   * Logs out the user and clears the authentication state.
-   */
-  const handleLogout = async () => {
-    await apiLogout(); // Errors handled in apiClient
-    dispatch({ type: "LOGOUT" });
-    toast.info("Logged out successfully!");
+  const logout = async () => {
+    dispatch({ type: "SET_LOADING", payload: true }); // Start loading
+    try {
+      await apiLogout();
+      dispatch({ type: "LOGOUT" });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false }); // End loading
+    }
   };
 
   return (
     <AuthContext.Provider
-      value={{
-        state,
-        dispatch,
-        login,
-        logout: handleLogout,
-        register, // Added register method
-      }}
+      value={{ ...state, dispatch, login, logout, register }}
     >
       {children}
     </AuthContext.Provider>

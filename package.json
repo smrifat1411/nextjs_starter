@@ -19,6 +19,7 @@
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-hook-form": "^7.53.2",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-toastify": "^10.0.6"
   },
   "devDependencies": {

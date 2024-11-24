@@ -1,5 +1,6 @@
 import AUTH_ENDPOINTS from "@/constants/endpoints/auth";
 import apiClient from "../apiClient";
+import { setToken, removeToken } from "@/utils/tokenUtils";
 
 interface AuthCredentials {
   email: string;
@@ -7,7 +8,8 @@ interface AuthCredentials {
 }
 
 export interface AuthResponse {
-  token: string;
+  accessToken: string; // Assuming this is the access token
+  refreshToken: string; // Assuming the API also provides a refresh token
   user: {
     id: string;
     email: string;
@@ -25,6 +27,12 @@ export const signin = async (
     AUTH_ENDPOINTS.SIGNIN,
     values
   );
+
+  const { accessToken, refreshToken } = response.data;
+
+  // Store tokens after successful login
+  setToken(accessToken, refreshToken);
+
   return response.data;
 };
 
@@ -38,6 +46,12 @@ export const signup = async (
     AUTH_ENDPOINTS.SIGNUP,
     values
   );
+
+  const { accessToken, refreshToken } = response.data;
+
+  // Store tokens after successful signup
+  setToken(accessToken, refreshToken);
+
   return response.data;
 };
 
@@ -45,5 +59,9 @@ export const signup = async (
  * Logs out the user.
  */
 export const logout = async (): Promise<void> => {
-  console.log("Logout logic: Clearing client-side state, no server request.");
+  // Remove tokens from client-side storage
+  removeToken();
+
+  // Optionally, you can add server-side logout logic if required
+  console.log("Logout: Tokens cleared from client-side.");
 };

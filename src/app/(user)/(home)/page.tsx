@@ -1,11 +1,14 @@
-import React from 'react'
+import ProductPage from "@/components/products/Products";
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 const page = (props: Props) => {
   return (
-    <div>page</div>
-  )
-}
+    <div>
+      <ProductPage />
+    </div>
+  );
+};
 
-export default page
+export default page;

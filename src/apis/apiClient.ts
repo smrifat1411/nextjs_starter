@@ -5,7 +5,8 @@ import { handleApiError } from "./errorHandler";
 const REFRESH_TOKEN_ENDPOINT = "/auth/refresh"; // Adjust based on your API
 
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URI,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -33,7 +34,10 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
 
     // Handle 401 errors (Unauthorized) for token refresh
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.message === "token expired" &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -52,11 +56,10 @@ apiClient.interceptors.response.use(
           return apiClient(originalRequest); // Retry the original request
         } else {
           removeToken();
-          window.location.href = "/auth/login"; // Redirect to login
         }
       } catch (refreshError) {
-        removeToken();
-        window.location.href = "/auth/login";
+        // removeToken();
+
         handleApiError(refreshError); // Automatically handles token refresh errors
         return Promise.reject(refreshError);
       }

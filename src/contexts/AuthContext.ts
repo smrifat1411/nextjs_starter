@@ -1,13 +1,12 @@
 import { createContext } from "react";
 import { AuthState, AuthAction } from "@/reducers/authReducer";
 
-// Define the shape of the context value
-export interface AuthContextType {
-  state: AuthState;
+export interface AuthContextType extends AuthState {
+  // Extend AuthState directly
   dispatch: React.Dispatch<AuthAction>;
   login: (values: { email: string; password: string }) => Promise<void>;
   logout: () => Promise<void>;
-  register: (values: { email: string; password: string }) => Promise<void>; // Add register method
+  register: (values: { email: string; password: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);

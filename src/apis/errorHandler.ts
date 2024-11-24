@@ -11,26 +11,29 @@ export const handleApiError = (error: any): void => {
 
   // Check if it's an Axios error with a response
   if (error.response) {
-    const { status } = error.response;
+    const { status, data } = error.response;
+
+    // Prefer `msg` property if available, otherwise fallback to default for status codes
+    const apiMsg = data?.message;
 
     switch (status) {
       case 400:
-        message = "Bad request. Please check your input.";
+        message = apiMsg || "Bad request. Please check your input.";
         break;
       case 401:
-        message = "Unauthorized. Please log in.";
+        message = apiMsg || "Unauthorized. Please log in.";
         break;
       case 403:
-        message = "Access denied. You do not have permission.";
+        message = apiMsg || "Access denied. You do not have permission.";
         break;
       case 404:
-        message = "Resource not found.";
+        message = apiMsg || "Resource not found.";
         break;
       case 500:
-        message = "Internal server error. Please try again later.";
+        message = apiMsg || "Internal server error. Please try again later.";
         break;
       default:
-        message = error.response.data?.message || "An error occurred.";
+        message = apiMsg || data?.message || "An error occurred.";
     }
   } else if (error.request) {
     // Request was made but no response received
