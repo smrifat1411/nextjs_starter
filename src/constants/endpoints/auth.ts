@@ -10,9 +10,7 @@ const AUTH_ENDPOINTS = {
   RECEIVE_OTP: "/auth/local/receive-otp",
   SET_PASSWORD: "/auth/local/otp-newpassword",
   REFRESH_TOKEN: "/auth/local/refresh-token",
+  CHECK_EXISTING_USER: "/auth/v2/local/check-existing-user",
 };
 
 export default AUTH_ENDPOINTS;
-
-
-

@@ -1,6 +1,6 @@
 import AUTH_ENDPOINTS from "@/constants/endpoints/auth";
+import { removeToken, setToken } from "@/utils/tokenUtils";
 import apiClient from "../apiClient";
-import { setToken, removeToken } from "@/utils/tokenUtils";
 
 interface AuthCredentials {
   email: string;
@@ -16,6 +16,7 @@ export interface AuthResponse {
     name: string;
   };
 }
+
 
 /**
  * Logs in the user with email and password.
@@ -64,4 +65,19 @@ export const logout = async (): Promise<void> => {
 
   // Optionally, you can add server-side logout logic if required
   console.log("Logout: Tokens cleared from client-side.");
+};
+
+/**
+ * Checks if a user exists based on the auth method and identifier.
+ */
+export const checkExistingUser = async (values: {
+  authMethod: string;
+  loginIdentifier: string;
+}): Promise<boolean> => {
+  const response = await apiClient.post<{ exists: boolean }>(
+    AUTH_ENDPOINTS.CHECK_EXISTING_USER,
+    values
+  );
+
+  return response.data.exists; // Backend should return `{ exists: true/false }`
 };

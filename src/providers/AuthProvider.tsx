@@ -1,7 +1,12 @@
 import React, { useReducer } from "react";
 import AuthContext from "@/contexts/AuthContext";
 import { authReducer, initialAuthState } from "@/reducers/authReducer";
-import { signin, signup, logout as apiLogout } from "@/apis/auth/authApi";
+import {
+  signin,
+  signup,
+  logout as apiLogout,
+  checkExistingUser,
+} from "@/apis/auth/authApi";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -40,9 +45,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const checkUserExists = async (values: {
+    authMethod: string;
+    loginIdentifier: string;
+  }) => {
+    dispatch({ type: "SET_LOADING", payload: true }); // Optional: Set loading while checking user existence
+    try {
+      const exists = await checkExistingUser(values);
+      dispatch({ type: "CHECK_USER_EXISTS", payload: exists });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false }); // End loading
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ ...state, dispatch, login, logout, register }}
+      value={{ ...state, dispatch, login, logout, register, checkUserExists }}
     >
       {children}
     </AuthContext.Provider>
