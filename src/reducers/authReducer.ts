@@ -1,61 +1,49 @@
-// In authReducer.ts
+import { AUTH_METHODS } from "@/constants/methods/authMethods";
 
-export type AuthState = {
+export interface AuthState {
   isAuthenticated: boolean;
-  user: unknown | null;
-  isLoading: boolean; // Add loading state
-  userExists: boolean | null; // Track if user exists
-};
+  user: unknown;
+  loading: boolean;
+  authMethod: string;
+  errors: unknown;
+  userExists: boolean | null; // Add userExists to track the existence of a user
+}
+
+export type AuthAction =
+  | { type: "SET_LOADING"; payload: boolean }
+  | { type: "LOGIN"; payload: unknown }
+  | { type: "LOGOUT" }
+  | { type: "SET_AUTH_METHOD"; payload: string }
+  | { type: "CHECK_USER_EXISTS"; payload: boolean }
+  | { type: "SET_ERRORS"; payload: unknown };
 
 export const initialAuthState: AuthState = {
   isAuthenticated: false,
   user: null,
-  isLoading: false,
-  userExists: null, // Initial state for user existence check
+  loading: false,
+  authMethod: AUTH_METHODS.EMAIL_AND_PASSWORD,
+  errors: null,
+  userExists: null, // Initialize as null or false, based on how you want to handle the state
 };
-
-export type AuthAction =
-  | { type: "LOGIN"; payload: any }
-  | { type: "LOGOUT" }
-  | { type: "SET_USER"; payload: any }
-  | { type: "SET_LOADING"; payload: boolean }
-  | { type: "CHECK_USER_EXISTS"; payload: boolean | null }; // New action type
 
 export const authReducer = (
   state: AuthState,
   action: AuthAction
 ): AuthState => {
   switch (action.type) {
-    case "LOGIN":
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-        isLoading: false,
-      };
-    case "LOGOUT":
-      return {
-        ...initialAuthState,
-        isLoading: false, // Reset loading
-      };
-    case "SET_USER":
-      return {
-        ...state,
-        user: action.payload,
-        isLoading: false,
-      };
     case "SET_LOADING":
-      return {
-        ...state,
-        isLoading: action.payload,
-      };
+      return { ...state, loading: action.payload };
+    case "LOGIN":
+      return { ...state, isAuthenticated: true, user: action.payload };
+    case "LOGOUT":
+      return { ...state, isAuthenticated: false, user: null };
+    case "SET_AUTH_METHOD":
+      return { ...state, authMethod: action.payload };
     case "CHECK_USER_EXISTS":
-      return {
-        ...state,
-        userExists: action.payload, // Set the result of user existence check
-        isLoading: false,
-      };
+      return { ...state, userExists: action.payload }; // Now it updates the userExists correctly
+    case "SET_ERRORS":
+      return { ...state, errors: action.payload };
     default:
-      throw new Error(`Unhandled action type: ${action.type}`);
+      return state;
   }
 };

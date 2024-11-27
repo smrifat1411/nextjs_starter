@@ -5,7 +5,7 @@ import { handleApiError } from "./errorHandler";
 const REFRESH_TOKEN_ENDPOINT = "/auth/refresh"; // Adjust based on your API
 
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URI,
+  baseURL: process.env.NEXT_PUBLIC_API_URI || "http://localhost:4000/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
