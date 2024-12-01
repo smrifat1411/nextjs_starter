@@ -1,12 +1,12 @@
 "use client";
+import AuthFlow from "@/components/auth/AuthFlow";
 import { Tooltip } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
-import { Search } from "./searchfilter";
 import { Cart } from "./cart";
-import Wishlist from "./wishlist/WishList";
 import ProfileSection from "./ProfileSection";
-import Login from "@/components/auth/Login";
+import { Search } from "./searchfilter";
+import Wishlist from "./wishlist/WishList";
 
 export const MainNavbar: React.FC = () => {
   // State to manage the mobile menu open/close state
@@ -21,15 +21,9 @@ export const MainNavbar: React.FC = () => {
   };
 
   // Handler to close the login modal
-  const handleLoginModalClose = () => {
+  const handleCloseModal = () => {
     setIsLoginModalOpen(false);
   };
-
-  // Dummy handler for login form submission
-  // const handleLoginSubmit = (email: string) => {
-  //   console.log("Logging in with email:", email);
-  //   setIsLoginModalOpen(false); // Close the modal after login
-  // };
 
   return (
     <div className="flex h-[80px] w-full items-center justify-between border-b border-gray-200 bg-white p-4 text-sm md:px-12">
@@ -85,11 +79,6 @@ export const MainNavbar: React.FC = () => {
 
       {/* Right Section: Wishlist, Cart, and Profile */}
       <div className="flex h-full items-center gap-4 md:gap-6">
-        {/* Mobile Search Placeholder */}
-        <div className="block cursor-pointer md:hidden">
-          {/* Placeholder for mobile search */}
-        </div>
-
         {/* Profile Section */}
         <div className="flex h-full items-center gap-4 md:gap-6">
           {/* Profile Icon - Opens Login Modal */}
@@ -173,7 +162,7 @@ export const MainNavbar: React.FC = () => {
       </div>
 
       {/* Login Modal */}
-      {isLoginModalOpen && <Login onClose={handleLoginModalClose} />}
+      {isLoginModalOpen && <AuthFlow onClose={handleCloseModal} />}
     </div>
   );
 };

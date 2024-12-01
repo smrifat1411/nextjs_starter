@@ -7,6 +7,8 @@ export interface AuthContextType extends AuthState {
   setAuthMethod: (authMethod: string) => void;
   login: (values: { email: string; password: string }) => Promise<void>;
   logout: () => Promise<void>;
+  verifyOTP: (otp: string) => Promise<void>;
+
   register: (values: { email: string; password: string }) => Promise<void>;
   checkUserExists: (values: {
     authMethod?: string;
