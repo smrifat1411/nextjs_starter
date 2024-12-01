@@ -26,7 +26,7 @@ const AuthBox = () => {
     }
   };
   return (
-    <div>
+    <div className="">
       {/* Form with react-hook-form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Email Input */}
