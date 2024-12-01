@@ -3,6 +3,7 @@ import { AppleLoginButton, GoogleLoginButton } from "./button";
 import useAuth from "@/hooks/useAuth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
+import { AuthSteps } from "@/reducers/authReducer";
 
 interface LoginFormInputs {
   email: string;
@@ -10,7 +11,7 @@ interface LoginFormInputs {
 }
 
 const AuthBox = () => {
-  const { login } = useAuth();
+  const { login, dispatch } = useAuth();
   const {
     register,
     handleSubmit,
@@ -19,6 +20,7 @@ const AuthBox = () => {
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
+      dispatch({ type: "SET_AUTH_STEP", payload: AuthSteps.SIGNUP });
       await login(data); // Call the login function from the context
       console.log("Login successful");
     } catch (error) {
@@ -70,7 +72,7 @@ const AuthBox = () => {
             type="submit"
             className={`bg-[#dc1a63] py-2 px-4 rounded-lg w-full text-white flex items-center justify-center`}
           >
-            {"Continue"}
+            Continue
           </button>
         </div>
       </form>

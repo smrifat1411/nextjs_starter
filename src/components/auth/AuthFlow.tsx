@@ -3,6 +3,8 @@ import { AuthSteps } from "@/reducers/authReducer";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useMemo, useState } from "react";
 import AuthBox from "./AuthBox";
+import Signup from "./Register";
+import OtpInput from "./OtpInput";
 
 // Define props for the AuthFlow component
 interface AuthFlowProps {
@@ -39,6 +41,10 @@ const AuthFlow: React.FC<AuthFlowProps> = ({ onClose }) => {
       case AuthSteps.EMAIL_PHONE_INPUT:
         return <AuthBox />;
       // Handle other cases when needed
+      case AuthSteps.SIGNUP:
+        return <Signup />;
+      case AuthSteps.OTP_VERIFICATION:
+        return <OtpInput length={6} />;
       default:
         return <p>No step selected</p>;
     }
@@ -61,7 +67,7 @@ const AuthFlow: React.FC<AuthFlowProps> = ({ onClose }) => {
           className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 z-50"
         >
           <motion.div
-            className="bg-white w-full max-w-md rounded-2xl"
+            className="bg-white  w-auto rounded-2xl"
             variants={{
               hidden: { scale: 0.9, opacity: 0 },
               visible: { scale: 1, opacity: 1 },
@@ -73,7 +79,7 @@ const AuthFlow: React.FC<AuthFlowProps> = ({ onClose }) => {
               damping: 30,
             }}
           >
-            <div className="bg-white p-8 relative w-full max-w-md rounded-2xl">
+            <div className="bg-white p-8 relative w-full min-w-[420px] rounded-2xl">
               {/* Close button */}
 
               <button

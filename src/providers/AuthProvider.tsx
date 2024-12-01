@@ -35,9 +35,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await signin(values); // Call the sign-in API
       dispatch({ type: "LOGIN", payload: response.user });
       dispatch({ type: "SET_AUTH_STEP", payload: AuthSteps.LOGGED_IN }); // Move to logged-in step
-    } catch (error) {
-      console.error("Login failed", error);
-      dispatch({ type: "SET_ERRORS", payload: error }); // Optionally handle errors
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
@@ -51,9 +48,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await signup(values); // Call the sign-up API
       dispatch({ type: "LOGIN", payload: response.user });
       dispatch({ type: "SET_AUTH_STEP", payload: AuthSteps.OTP_VERIFICATION }); // Go to OTP verification step
-    } catch (error) {
-      console.error("Registration failed", error);
-      dispatch({ type: "SET_ERRORS", payload: error });
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
@@ -67,8 +61,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await apiLogout(); // Call the logout API
       dispatch({ type: "LOGOUT" });
       dispatch({ type: "SET_AUTH_STEP", payload: AuthSteps.EMAIL_PHONE_INPUT }); // Reset to the start of the flow
-    } catch (error) {
-      console.error("Logout failed", error);
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
@@ -98,10 +90,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       return exists;
-    } catch (error) {
-      console.error("Error checking user existence", error);
-      dispatch({ type: "SET_ERRORS", payload: error });
-      return false;
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
@@ -115,9 +103,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Call OTP verification API (to be implemented)
       // If OTP is verified, proceed to the next step (password creation)
       dispatch({ type: "SET_AUTH_STEP", payload: AuthSteps.PASSWORD_CREATION });
-    } catch (error) {
-      console.error("OTP verification failed", error);
-      dispatch({ type: "SET_ERRORS", payload: error });
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
